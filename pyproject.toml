@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "auto-commute"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "auto_commute"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+webdriver-manager = "^3.8.6"
+selenium = "^4.10.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -57,6 +57,9 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86
     && echo "conda activate auto" >> ~/.bashrc
     && source ~/.bashrc
 
+# install poetry
+RUN curl -sSL https://install.python-poetry.org | python -
+
 # copy project
 COPY . $HOME/auto-commute
 WORKDIR $HOME/auto-commute
