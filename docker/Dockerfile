@@ -6,8 +6,7 @@ RUN sudo su
 WORKDIR $HOME
 RUN mkdir $HOME/.ssh
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8
-ENV PATH $HOME
-ENV echo 'export PATH=$HOME/.local/bin:$PATH' >> ~/.bashrc
+ENV PATH $PATH:$HOME/.local/bin:.
 SHELL ["/bin/bash", "-c"]
 
 # update APT package manager, install basic packages
@@ -21,6 +20,8 @@ RUN apt-get update -y \
     && vim \
     && build-essential \
     && unzip \
+    && cron \
+    && shc \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
     
@@ -37,16 +38,16 @@ RUN apt-get update -y \
 RUN sed -ri 's/^#?PermitRootLogin\s+.*/PermitRootLogin yes/' /etc/ssh/sshd_config \
     && sed -ri 's/^#?PubkeyAuthentication\s+.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config \
     && sed -ri 's/^#?StirictModes\s+.*/StirictModes yes/' /etc/ssh/sshd_config \
-    && sed -ri 's/^#?PasswordAuthentication\s+.*/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+    && sed -ri 's/^#?PasswordAuthentication\s+.*/PasswordAuthentication no/' /etc/ssh/sshd_config \
     && sed -ri 's/UsePAM yes/#UsePAM yes/g' /etc/ssh/sshd_config \
-    && echo '/usr/sbin/sshd' >> ~/.bashrc
+    && echo '/usr/sbin/sshd' >> ~/.bashrc \
     && service ssh start
 
 # install web-based vscode    
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 # set miniconda
-ENV PATH /opt/conda/bin:$PATH
+ENV PYTHONPATH /opt/conda:$PYTHONPATH
 RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh \ 
     && /bin/bash ~/miniconda.sh -b -p /opt/conda \
     && rm ~/miniconda.sh \
@@ -54,7 +55,7 @@ RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86
     && echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc \
     && source ~/.bashrc \
     && conda create -n auto python=3.10 -y \
-    && echo "conda activate auto" >> ~/.bashrc
+    && echo "conda activate auto" >> ~/.bashrc \
     && source ~/.bashrc
 
 # install poetry

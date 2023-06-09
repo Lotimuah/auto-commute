@@ -10,6 +10,9 @@ packages = [{include = "auto_commute"}]
 python = "^3.10"
 webdriver-manager = "^3.8.6"
 selenium = "^4.10.0"
+pytz = "^2023.3"
+pyperclip = "^1.8.2"
+cryptography = "^41.0.1"
 
 
 [build-system]

@@ -161,3 +161,7 @@ cython_debug/
 
 # Custom setting
 .vscode
+screen_shots
+approval.sh
+approval.sh.x
+approval.sh.x.c
